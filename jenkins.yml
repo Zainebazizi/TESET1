@@ -1,0 +1,30 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('Checkout') {
+            steps {
+                // Récupération du code à partir du référentiel Git
+                git branch: 'votre-branche', credentialsId: 'votre-id-d-credentials', url: 'https://votre-repo.git'
+            }
+        }
+
+        stage('Build') {
+            steps {
+                // Exécution du script de build (exemple : script shell)
+                sh 'chemin/vers/votre-script-de-build.sh'
+            }
+        }
+
+        // Ajoutez d'autres étapes au besoin (tests, déploiement, etc.)
+    }
+
+    // Configuration des notifications en cas d'erreur
+    post {
+        failure {
+            emailext body: "La construction du projet a échoué. Veuillez vérifier Jenkins pour plus de détails.",
+                    subject: "Échec de la construction du projet",
+                    to: "votre-email@gmail.com"
+        }
+    }
+}
